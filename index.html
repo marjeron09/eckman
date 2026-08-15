@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Marjeron</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- =====================================================
+                                         EXTRA PAGE CONTROL / FIXES
+                                    ====================================================== -->
+    <style>
+        /* =====================================================
+           PAGE CONTROL
+        ====================================================== */
+        .page-hidden {
+            display: none !important;
+        }
+
+        .friend-profile {
+            display: none;
+        }
+
+        .friend-profile.active {
+            display: block;
+        }
+
+        .story-navigation {
+            display: none;
+        }
+
+        .story-navigation.active {
+            display: flex;
+        }
+
+        .memory-wall {
+            display: none;
+        }
+
+        .memory-wall.active {
+            display: block !important;
+        }
+
+        /* =====================================================
+           HOME
+        ====================================================== */
+        body.home-open .friend-profile,
+        body.home-open .story-navigation,
+        body.home-open .memory-wall {
+            display: none !important;
+        }
+
+        /* =====================================================
+           FRIENDS
+        ====================================================== */
+        body.friends-open .friend-profile,
+        body.friends-open .story-navigation,
+        body.friends-open .memory-wall,
+        body.friends-open .hero,
+        body.friends-open .final-section {
+            display: none !important;
+        }
+
+        /* =====================================================
+           PROFILE
+        ====================================================== */
+        body.profile-open .hero,
+        body.profile-open .friends-section,
+        body.profile-open .stats-section,
+        body.profile-open .final-section,
+        body.profile-open .memory-wall,
+        body.profile-open .site-footer {
+            display: none !important;
+        }
+
+        /* =====================================================
+           MEMORY WALL
+        ====================================================== */
+        body.memories-open .hero,
+        body.memories-open .friends-section,
+        body.memories-open .stats-section,
+        body.memories-open .final-section,
+        body.memories-open .friend-profile,
+        body.memories-open .story-navigation,
+        body.memories-open .site-footer {
+            display: none !important;
+        }
+
+        body.memories-open .memory-wall {
+            display: block !important;
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ====================================================== */
+        .navbar button {
+            background: none;
+            border: none;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           VIDEO
+        ====================================================== */
+        .memory-video {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .memory-player {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* =====================================================
+           LETTER INTRO
+        ====================================================== */
+        #letterIntro {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            background: radial-gradient(circle at center, #21164a 0%, #090912 45%, #030305 100%) !important;
+            z-index: 999999 !important;
+            overflow: hidden !important;
+            color: white !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        #letterIntro.hidden {
+            display: none !important;
+        }
+
+        #letterIntro *,
+        #letterIntro *::before,
+        #letterIntro *::after {
+            box-sizing: border-box !important;
+        }
+
+        #letterIntro .letter-intro-content {
+            width: 100% !important;
+            max-width: 600px !important;
+            margin: auto !important;
+        }
+
+        #letterIntro .letter-small-title {
+            margin: 0 0 15px !important;
+            color: #b58cff !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            letter-spacing: 4px !important;
+        }
+
+        #letterIntro h1 {
+            margin: 0 !important;
+            color: white !important;
+            font-size: clamp(40px, 9vw, 72px) !important;
+            line-height: 1.05 !important;
+            font-weight: 800 !important;
+        }
+
+        #letterIntro h1 span {
+            color: #9b7cff !important;
+        }
+
+        #letterIntro .letter-subtitle {
+            margin: 20px 0 35px !important;
+            color: #bdbdc9 !important;
+            font-size: 16px !important;
+        }
+
+        /* =====================================================
+           ENVELOPE
+        ====================================================== */
+        #letterIntro .envelope-button {
+            position: relative !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            margin: auto !important;
+            padding: 0 !important;
+            border: none !important;
+            outline: none !important;
+            background: transparent !important;
+            color: white !important;
+            cursor: pointer !important;
+        }
+
+        #letterIntro .envelope {
+            position: relative !important;
+            width: 240px !important;
+            height: 155px !important;
+            margin: 0 !important;
+            background: #151522 !important;
+            border: 2px solid #9b7cff !important;
+            border-radius: 8px !important;
+            box-shadow: 0 0 15px rgba(155, 124, 255, .35), 0 0 45px rgba(155, 124, 255, .15) !important;
+            overflow: hidden !important;
+            transition: .3s ease !important;
+        }
+
+        #letterIntro .envelope-button:hover .envelope {
+            transform: translateY(-8px) scale(1.04) !important;
+            box-shadow: 0 0 25px rgba(155, 124, 255, .6), 0 0 70px rgba(155, 124, 255, .25) !important;
+        }
+
+        #letterIntro .envelope-flap {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 0 !important;
+            height: 0 !important;
+            border-left: 120px solid transparent !important;
+            border-right: 120px solid transparent !important;
+            border-top: 85px solid #30274b !important;
+            z-index: 3 !important;
+        }
+
+        #letterIntro .envelope-body {
+            position: absolute !important;
+            inset: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: transparent !important;
+            border: none !important;
+            color: #ff6fae !important;
+            font-size: 55px !important;
+            z-index: 2 !important;
+        }
+
+        #letterIntro .envelope-button > span {
+            display: block !important;
+            margin-top: 18px !important;
+            color: #d7d2e8 !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            letter-spacing: 3px !important;
+        }
+
+        /* =====================================================
+           PASSWORD
+        ====================================================== */
+        #letterPassword {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            display: none !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 20px !important;
+            background: radial-gradient(circle at center, #21164a 0%, #090912 50%, #030305 100%) !important;
+            color: white !important;
+            z-index: 99999999 !important;
+            overflow-y: auto !important;
+            box-sizing: border-box !important;
+        }
+
+        #letterPassword.show {
+            display: flex !important;
+        }
+
+        #letterPassword .password-box {
+            width: 100% !important;
+            max-width: 430px !important;
+            margin: auto !important;
+            padding: 35px 25px !important;
+            background: #11111d !important;
+            border: 1px solid #9b7cff !important;
+            border-radius: 22px !important;
+            text-align: center !important;
+            box-shadow: 0 0 25px rgba(155, 124, 255, .35), 0 20px 60px rgba(0, 0, 0, .8) !important;
+            box-sizing: border-box !important;
+        }
+
+        #letterPassword .password-icon {
+            font-size: 48px !important;
+            margin-bottom: 12px !important;
+        }
+
+        #letterPassword .password-small-title {
+            margin: 0 0 12px !important;
+            color: #b58cff !important;
+            font-size: 11px !important;
+            font-weight: bold !important;
+            letter-spacing: 4px !important;
+        }
+
+        #letterPassword h2 {
+            margin: 0 0 15px !important;
+            color: white !important;
+            font-size: 28px !important;
+            line-height: 1.2 !important;
+        }
+
+        #letterPassword .password-text {
+            margin: 0 0 20px !important;
+            color: #bdbdc9 !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+        }
+
+        #letterPassword .password-hint {
+            margin: 0 0 20px !important;
+            padding: 14px !important;
+            background: rgba(155, 124, 255, .1) !important;
+            border: 1px solid rgba(155, 124, 255, .3) !important;
+            border-radius: 12px !important;
+            color: #ddd5ff !important;
+            font-size: 13px !important;
+            line-height: 1.5 !important;
+        }
+
+        #letterPassword input {
+            display: block !important;
+            width: 100% !important;
+            height: 52px !important;
+            margin: 0 0 14px !important;
+            padding: 0 15px !important;
+            background: #08080e !important;
+            border: 1px solid #444 !important;
+            border-radius: 12px !important;
+            outline: none !important;
+            color: white !important;
+            font-size: 16px !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        #letterPassword input:focus {
+            border-color: #9b7cff !important;
+            box-shadow: 0 0 15px rgba(155, 124, 255, .3) !important;
+        }
+
+        #letterPassword button {
+            display: block !important;
+            width: 100% !important;
+            min-height: 52px !important;
+            margin: 0 !important;
+            padding: 12px !important;
+            background: linear-gradient(135deg, #7655ff, #a77bff) !important;
+            border: none !important;
+            border-radius: 12px !important;
+            color: white !important;
+            font-size: 13px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+        }
+
+        #letterPassword .password-error {
+            min-height: 20px !important;
+            margin: 12px 0 0 !important;
+            color: #ff719d !important;
+            font-size: 13px !important;
+        }
+
+        /* =====================================================
+           FRIEND LETTER & TYPEWRITER CURSOR
+        ====================================================== */
+        #friendLetter {
+            position: fixed !important;
+            inset: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            display: none !important;
+            align-items: flex-start !important;
+            justify-content: center !important;
+            padding: 40px 20px !important;
+            background: radial-gradient(circle at top, #21164a 0%, #090912 45%, #030305 100%) !important;
+            color: white !important;
+            overflow-y: auto !important;
+            z-index: 999999999 !important;
+            box-sizing: border-box !important;
+            -webkit-overflow-scrolling: touch !important;
+            scroll-behavior: smooth;
+        }
+
+        #friendLetter .friend-letter-box {
+            width: 100% !important;
+            max-width: 850px !important;
+            margin: 20px auto 60px !important;
+            padding: 45px 35px !important;
+            background: rgba(17, 17, 29, .96) !important;
+            border: 1px solid #9b7cff !important;
+            border-radius: 24px !important;
+            box-shadow: 0 0 35px rgba(155, 124, 255, .25) !important;
+            box-sizing: border-box !important;
+        }
+
+        #friendLetter .letter-music-icon {
+            font-size: 35px !important;
+            margin-bottom: 10px !important;
+        }
+
+        #friendLetter .letter-small-title {
+            margin: 0 0 12px !important;
+            color: #b58cff !important;
+            font-size: 11px !important;
+            font-weight: bold !important;
+            letter-spacing: 4px !important;
+        }
+
+        #friendLetter h1 {
+            margin: 0 !important;
+            font-size: clamp(32px, 7vw, 52px) !important;
+        }
+
+        #friendLetter h1 span {
+            color: #9b7cff !important;
+        }
+
+        #friendLetter .letter-line {
+            width: 100% !important;
+            height: 1px !important;
+            margin: 25px 0 30px !important;
+            background: linear-gradient(90deg, transparent, #9b7cff, transparent) !important;
+        }
+
+        #friendLetter .letter-message p {
+            margin: 0 0 20px !important;
+            color: #d1cfdb !important;
+            font-size: 15px !important;
+            line-height: 1.8 !important;
+        }
+
+        #friendLetter .letter-message .letter-final {
+            color: white !important;
+            font-weight: 600 !important;
+            font-size: 17px !important;
+        }
+
+        .typing-cursor::after {
+            content: "|";
+            display: inline-block;
+            margin-left: 3px;
+            color: #9b7cff;
+            font-weight: bold;
+            animation: blinkCursor 0.7s infinite;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        #letterSignature {
+            display: none;
+            margin-top: 35px !important;
+            padding-top: 25px !important;
+            border-top: 1px solid rgba(255, 255, 255, .1) !important;
+        }
+
+        #letterSignature p {
+            margin: 0 0 5px !important;
+            color: #aaa8b8 !important;
+        }
+
+        #letterSignature h2 {
+            margin: 0 !important;
+            color: #b58cff !important;
+        }
+
+        .letter-home-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 24px;
+            background: #9b7cff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .letter-home-btn:hover {
+            background: #7a58f4;
+        }
+
+        /* =====================================================
+           LOCK PAGE WHEN LETTER IS OPEN
+        ===================================================== */
+        body.letter-open {
+            overflow: hidden !important;
+            height: 100vh !important;
+            position: fixed !important;
+            width: 100% !important;
+        }
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+        @media (max-width: 600px) {
+            #letterIntro {
+                padding: 20px !important;
+            }
+
+            #letterIntro .letter-small-title {
+                font-size: 10px !important;
+            }
+
+            #letterIntro .letter-subtitle {
+                font-size: 14px !important;
+            }
+
+            #letterIntro .envelope {
+                width: 210px !important;
+                height: 135px !important;
+            }
+
+            #letterIntro .envelope-flap {
+                border-left-width: 105px !important;
+                border-right-width: 105px !important;
+                border-top-width: 75px !important;
+            }
+
+            #friendLetter {
+                padding: 20px 12px !important;
+            }
+
+            #friendLetter .friend-letter-box {
+                padding: 30px 20px !important;
+                border-radius: 18px !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="home-open">
+
+    <!-- =====================================================
+                                         FRIEND LETTER INTRO
+                                    ====================================================== -->
+    <div id="letterIntro" class="letter-intro">
+        <div class="letter-intro-content">
+            <p class="letter-small-title">
+                A LITTLE SOMETHING FOR MY FRIENDS
+            </p>
+            <h1>💌 A Letter<br><span>For You Guys</span></h1>
+            <p class="letter-subtitle">
+                There's something waiting inside.
+            </p>
+
+            <button type="button" class="envelope-button" onclick="openLetterPassword()">
+                <div class="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-body">
+                        ✉
+                    </div>
+                </div>
+                <span>TAP THE ENVELOPE</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- =====================================================
+                                         PASSWORD
+                                    ====================================================== -->
+    <div id="letterPassword" class="letter-password">
+        <div class="password-box">
+            <div class="password-icon">
+                🔐
+            </div>
+            <p class="password-small-title">
+                PRIVATE MESSAGE
+            </p>
+            <h2>You found the letter!</h2>
+            <p class="password-text">
+                Pag eto di niyo alam dedemanda ko kayo.
+            </p>
+            <p class="password-hint">
+                💡 Hint: Eto lagi niyong tawag sakin imbes na marjeron small letter lahat sige pag di mo alam tanong mo sakin pero try mo parin kupal.👀
+            </p>
+
+            <input type="password" id="letterPasswordInput" placeholder="Enter password" autocomplete="off">
+            <button type="button" onclick="unlockLetter()">UNLOCK THE LETTER ✨</button>
+            <p id="passwordError" class="password-error"></p>
+        </div>
+    </div>
+
+    <!-- =====================================================
+                                         THE LETTER (TYPEWRITER ENABLED)
+                                    ====================================================== -->
+    <div id="friendLetter" class="friend-letter">
+        <div class="friend-letter-box">
+            <div class="letter-music-icon">
+                🎵
+            </div>
+            <p class="letter-small-title">
+                A MESSAGE GALING SA NAG IISANG ECKMAN
+            </p>
+            <h1>To My <span>Friends</span> 💌</h1>
+            <div class="letter-line"></div>
+
+            <div class="letter-message" id="typewriterLetterBody">
+                <!-- Text will type out dynamically via JavaScript -->
+            </div>
+
+            <div class="letter-signature" id="letterSignature">
+                <p>
+                    — From your friend,
+                </p>
+                <h2>Eckman. 🖤</h2>
+                <button type="button" class="letter-home-btn" onclick="closeLetterAndGoHome()">🏠 Go to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- =====================================================
+                                         NAVIGATION
+                                    ====================================================== -->
+    <div class="nav-links">
+
+        <button type="button" onclick="goHome()">
+            Home
+        </button>
+
+        <button type="button" onclick="showFriends()">
+            Friends
+        </button>
+
+        <button type="button" onclick="showMemories()">
+            Memories
+        </button>
+
+    </div>
+
+    <!-- =====================================================
+                                         HOME
+                                    ====================================================== -->
+    <main class="hero" id="home">
+        <div class="hero-content">
+            <p class="small-title">
+                A LITTLE PIECE OF ME
+            </p>
+            <h1>This Is Me, <span>Through Their Eyes.</span></h1>
+            <p class="intro typing-intro" id="typingIntro"></p>
+
+            <button type="button" class="explore-btn" onclick="showFriends()">
+                Meet My Friends <span>↓</span>
+            </button>
+
+            <div class="scroll-indicator">
+                <span></span> Scroll to explore
+            </div>
+        </div>
+    </main>
+
+    <!-- =====================================================
+                                         FRIENDS
+                                    ====================================================== -->
+    <section class="friends-section" id="friends">
+        <div class="section-heading">
+            <p class="small-title">
+                THE PEOPLE WHO KNOW ME
+            </p>
+            <h2>These are just a few of my friends. <span class="friend-count">06</span></h2>
+            <p>
+                Different people, different memories, and different perspectives of who I am.
+            </p>
+        </div>
+
+        <div class="friends-grid">
+
+            <!-- FRIEND 01 -->
+            <div class="friend-card">
+                <div class="friend-photo">
+                    <img src="images/camille.jpg" alt="Camille Padlan">
+                </div>
+                <div class="friend-info">
+                    <p class="friend-number">
+                        FRIEND 01
+                    </p>
+                    <h3>Camille Padlan</h3>
+                    <p class="friend-nickname">
+                        Nickname: Rese
+                    </p>
+                    <p class="memory-label">
+                        A MEMORY
+                    </p>
+                    <p class="friend-description">
+                        Someone who knows me, my personality, and some of the moments we've shared.
+                    </p>
+                    <button type="button" class="view-btn" onclick="openFriend('camille')">View Camille's Story →</button>
+                </div>
+            </div>
+
+            <!-- FRIEND 02 -->
+            <div class="friend-card">
+                <div class="friend-photo">
+                    <img src="images/jhamel.jpg" alt="Jhamel Araza">
+                </div>
+                <div class="friend-info">
+                    <p class="friend-number">
+                        FRIEND 02
+                    </p>
+                    <h3>Jhamel Araza</h3>
+                    <p class="friend-nickname">
+                        Nickname: Jham
+                    </p>
+                    <p class="memory-label">
+                        A MEMORY
+                    </p>
+                    <p class="friend-description">
+                        Funny, solid, and definitely one of the makulit people in my life.
+                    </p>
+                    <button type="button" class="view-btn" onclick="openFriend('jhamel')">View Jhamel's Story →</button>
+                </div>
+            </div>
+
+            <!-- FRIEND 03 -->
+            <div class="friend-card">
+                <div class="friend-photo">
+                    <img src="images/jailyn.jpg" alt="Jailyn Zambale">
+                </div>
+                <div class="friend-info">
+                    <p class="friend-number">
+                        FRIEND 03
+                    </p>
+                    <h3>Jailyn Zambale</h3>
+                    <p class="friend-nickname">
+                        Nickname: Jajai
+                    </p>
+                    <p class="memory-label">
+                        A MEMORY
+                    </p>
+                    <p class="friend-description">
+                        A funny friend who also knows when to listen, with memories from the KM3 days.
+                    </p>
+                    <button type="button" class="view-btn" onclick="openFriend('jailyn')">View Jajai's Story →</button>
+                </div>
+            </div>
+
+            <!-- FRIEND 04 -->
+            <div class="friend-card">
+                <div class="friend-photo">
+                    <img src="images/caren.jpg" alt="Caren Salvador">
+                </div>
+                <div class="friend-info">
+                    <p class="friend-number">
+                        FRIEND 04
+                    </p>
+                    <h3>Caren Salvador</h3>
+                    <p class="friend-nickname">
+                        Nickname: Bam
+                    </p>
+                    <p class="memory-label">
+                        A MEMORY
+                    </p>
+                    <p class="friend-description">
+                        Funny, kind, and always ready for some kalokohan.
+                    </p>
+                    <button type="button" class="view-btn" onclick="openFriend('caren')">View Bam's Story →</button>
+                </div>
+            </div>
+
+            <!-- FRIEND 05 -->
+            <div class="friend-card">
+                <div class="friend-photo">
+                    <img src="images/lex.jpg" alt="Lex Magpantay">
+                </div>
+                <div class="friend-info">
+                    <p class="friend-number">
+                        FRIEND 05
+                    </p>
+                    <h3>Lex Magpantay</h3>
+                    <p class="friend-nickname">
+                        Nickname: Sentyyyy
+                    </p>
+                    <p class="memory-label">
+                        A MEMORY
+                    </p>
+                    <p class="friend-description">
+                        Solid, funny, and always ready for good times, laughter, tambay, and memories.
+                    </p>
+                    <button type="button" class="view-btn" onclick="openFriend('lex')">View Sentyyyy's Story →</button>
+                </div>
+            </div>
+
+            <!-- FRIEND 06 -->
+            <div class="friend-card featured-friend">
+                <div class="friend-photo">
+                    <img src="images/benhenrie.jpg" alt="Benhenrie Simeon">
+                </div>
+                <div class="friend-info">
+                    <p class="friend-number">
+                        FRIEND 06
+                    </p>
+                    <h3>Benhenrie Simeon</h3>
+                    <p class="friend-nickname">
+                        Nickname: Sigben
+                    </p>
+                    <p class="memory-label">
+                        A MEMORY
+                    </p>
+                    <p class="friend-description">
+                        A friend who's always there, shares the same humor, and apparently has some questionable advice. 😂
+                    </p>
+                    <button type="button" class="view-btn" onclick="openFriend('benhenrie')">View Sigben's Story →</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- =====================================================
+                                         STATS
+                                    ====================================================== -->
+    <section class="stats-section">
+        <div class="stat-card">
+            <span class="stat-number">6</span>
+            <span class="stat-label">Friends</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">48</span>
+            <span class="stat-label">Honest Answers</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Memories</span>
+        </div>
+    </section>
+
+    <!-- =====================================================
+                                         FINAL MESSAGE
+                                    ====================================================== -->
+    <section class="final-section">
+        <div class="final-content">
+            <p class="small-title">
+                A LITTLE REMINDER
+            </p>
+            <h2>Some memories are better <span>when shared.</span></h2>
+            <p class="final-text">
+                These aren't just answers from my friends. They're little pieces of memories, jokes, advice, and moments that I'll carry with me.
+            </p>
+
+            <div class="final-stats">
+                <div class="stat">
+                    <span class="stat-number">6</span>
+                    <span class="stat-label">Friends</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">48</span>
+                    <span class="stat-label">Honest Answers</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Memories</span>
+                </div>
+            </div>
+
+            <p class="final-signature">
+                — Marjeron "Eckman"
+            </p>
+        </div>
+    </section>
+
+    <!-- =====================================================
+                                         FRIEND PROFILES
+                                    ====================================================== -->
+
+    <!-- CAMILLE -->
+    <section class="friend-profile" id="camille-profile">
+        <button type="button" class="back-btn" onclick="closeFriend()">← Back to My Friends</button>
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="images/camille.jpg" alt="Camille Padlan">
+            </div>
+            <div>
+                <p class="small-title">
+                    FRIEND #01
+                </p>
+                <h2>Camille Padlan</h2>
+                <p class="profile-nickname">
+                    Nickname: Rese
+                </p>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <span>“</span>
+            <p>
+                Funny. Humble. Caring.
+            </p>
+        </div>
+
+        <div class="answers">
+            <div class="answer-card">
+                <p class="question">
+                    💭 How would you describe me as a friend?
+                </p>
+                <p class="answer">
+                    “You’re the kind of friend who makes everything lighter. Funny, humble, you’re someone I’m genuinely grateful to have.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ❤️ What's the best thing about me?
+                </p>
+                <p class="answer">
+                    “Your kindness. You care about people in such a genuine way, even without making a big deal out of it.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    😂 What's something you like about me?
+                </p>
+                <p class="answer">
+                    “I like how funny you are. You always know how to make people laugh, even on bad days.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🫣 What's something you don't like about me?
+                </p>
+                <p class="answer">
+                    “Sometimes you care too much about other people and forget to take care of yourself.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🌱 What should I improve or change?
+                </p>
+                <p class="answer">
+                    “Believe in yourself more. You’re capable of so much more than you think.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ⭐ Describe me in 3 words
+                </p>
+                <p class="answer words">
+                    Funny <span>•</span> Humble <span>•</span> Caring
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    📸 What's one memorable moment?
+                </p>
+                <p class="answer">
+                    “My birthday and those inuman sessions hahaha. It’s the random moments when we laugh over the simplest things. And when Diwayne called you Eggman hahaha. Those little moments became memories I’ll always treasure.”
+                </p>
+            </div>
+            <div class="answer-card final-answer">
+                <p class="question">
+                    💌 One piece of advice
+                </p>
+                <p class="answer">
+                    “Never change the kind heart you have, but always remember that you deserve the same care and kindness you give to everyone else.”
+                </p>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <p class="small-title">
+                RESE'S MESSAGE
+            </p>
+            <h3>“Never change the kind heart you have.”</h3>
+            <p>
+                A little reminder from someone who knows me.
+            </p>
+        </div>
+
+        <button type="button" class="back-btn bottom-back" onclick="closeFriend()">← Back to My Friends</button>
+    </section>
+
+    <!-- JHAMEL -->
+    <section class="friend-profile" id="jhamel-profile">
+        <button type="button" class="back-btn" onclick="closeFriend()">← Back to My Friends</button>
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="images/jhamel.jpg" alt="Jhamel Araza">
+            </div>
+            <div>
+                <p class="small-title">
+                    FRIEND #02
+                </p>
+                <h2>Jhamel Araza</h2>
+                <p class="profile-nickname">
+                    Nickname: Jham
+                </p>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <span>“</span>
+            <p>
+                Funny. Solid. Makulit.
+            </p>
+        </div>
+
+        <div class="answers">
+            <div class="answer-card">
+                <p class="question">
+                    💭 How would you describe me as a friend?
+                </p>
+                <p class="answer">
+                    “You're the type of friend na easy to talk at masaya na kupal kasama.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    😂 What's the best thing about me?
+                </p>
+                <p class="answer">
+                    “Your personality and you know how to make people laugh kahit random.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ❤️ What's something you like about me?
+                </p>
+                <p class="answer">
+                    “Yung pagiging ikaw. Kaso minsan sana ibang tao ka muna.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🫣 What's something you don't like about me?
+                </p>
+                <p class="answer">
+                    “Minsan ang kulit mo sobra. Parang may unlimited supply ka ng tanong at kwento — ‘Si Jack mapagmahal.’”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🌱 What should I improve or change?
+                </p>
+                <p class="answer">
+                    “Learn to trust yourself more and don't doubt yourself too much.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ⭐ Describe me in 3 words
+                </p>
+                <p class="answer words">
+                    Funny <span>•</span> Solid <span>•</span> Makulit
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    📸 What's one memorable moment?
+                </p>
+                <p class="answer">
+                    “Yung mga random moments natin basta magkakasama tayo, parang nagiging comedy show HAHAHA.”
+                </p>
+            </div>
+            <div class="answer-card final-answer">
+                <p class="question">
+                    💌 One piece of advice
+                </p>
+                <p class="answer">
+                    “Enjoy life more. Hindi lahat ng problema kailangan solusyonan agad, minsan tulog lang kailangan HAHAHA. Tas wag ka na rin tumigil mag-tagay. Stay real and don't let other people change who you are.”
+                </p>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <p class="small-title">
+                JHAM'S MESSAGE
+            </p>
+            <h3>“Stay real and don't let other people change who you are.”</h3>
+            <p>
+                A little reminder from someone who knows me.
+            </p>
+        </div>
+
+        <button type="button" class="back-btn bottom-back" onclick="closeFriend()">← Back to My Friends</button>
+    </section>
+
+    <!-- JAILYN -->
+    <section class="friend-profile" id="jailyn-profile">
+        <button type="button" class="back-btn" onclick="closeFriend()">← Back to My Friends</button>
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="images/jailyn.jpg" alt="Jailyn Zambale">
+            </div>
+            <div>
+                <p class="small-title">
+                    FRIEND #03
+                </p>
+                <h2>Jailyn Zambale</h2>
+                <p class="profile-nickname">
+                    Nickname: Jajai
+                </p>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <span>“</span>
+            <p>
+                Funny. Tall. Kind.
+            </p>
+        </div>
+
+        <div class="answers">
+            <div class="answer-card">
+                <p class="question">
+                    💭 How would you describe me as a friend?
+                </p>
+                <p class="answer">
+                    “Funny typa friend pero a listener din.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ⭐ What's the best thing about me?
+                </p>
+                <p class="answer">
+                    “Alam mo kung anong gusto mo at hindi mo gusto sa buhay.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    😂 What's something you like about me?
+                </p>
+                <p class="answer">
+                    “Humor.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🫣 What's something you don't like about me?
+                </p>
+                <p class="answer">
+                    “Sometimes yung mga jokes mo na below the belt na hahahahahha like it's a complete insult.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🌱 What should I improve or change?
+                </p>
+                <p class="answer">
+                    “Improve your ano siguro decisions in life.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ⭐ Describe me in 3 words
+                </p>
+                <p class="answer words">
+                    Funny <span>•</span> Tall <span>•</span> Kind
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    📸 What's one memorable moment?
+                </p>
+                <p class="answer">
+                    “Siguro yung mga times na sabay sabay pa tayong umuwi nung nasa KM3 pa'ko.”
+                </p>
+            </div>
+            <div class="answer-card final-answer">
+                <p class="question">
+                    💌 One piece of advice
+                </p>
+                <p class="answer">
+                    “Keep chasing your dreams! Don't Give Up!”
+                </p>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <p class="small-title">
+                JAJAI'S MESSAGE
+            </p>
+            <h3>“Keep chasing your dreams! Don't Give Up!”</h3>
+            <p>
+                A little reminder from someone who knows me.
+            </p>
+        </div>
+
+        <button type="button" class="back-btn bottom-back" onclick="closeFriend()">← Back to My Friends</button>
+    </section>
+
+    <!-- CAREN -->
+    <section class="friend-profile" id="caren-profile">
+        <button type="button" class="back-btn" onclick="closeFriend()">← Back to My Friends</button>
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="images/caren.jpg" alt="Caren Salvador">
+            </div>
+            <div>
+                <p class="small-title">
+                    FRIEND #04
+                </p>
+                <h2>Caren Salvador</h2>
+                <p class="profile-nickname">
+                    Nickname: Bam
+                </p>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <span>“</span>
+            <p>
+                Mabait. Matangkad. Funny.
+            </p>
+        </div>
+
+        <div class="answers">
+            <div class="answer-card">
+                <p class="question">
+                    💭 How would you describe me as a friend?
+                </p>
+                <p class="answer">
+                    “Puro kalokohan.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ❤️ What's the best thing about me?
+                </p>
+                <p class="answer">
+                    “Humor.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    😂 What's something you like about me?
+                </p>
+                <p class="answer">
+                    “Funny.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🫣 What's something you don't like about me?
+                </p>
+                <p class="answer">
+                    “Nung ghinost mo ako (sorry pero yun trauma ko sayo).”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🌱 What should I improve or change?
+                </p>
+                <p class="answer">
+                    “Pagiging maoy mo?”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ⭐ Describe me in 3 words
+                </p>
+                <p class="answer words">
+                    Mabait <span>•</span> Matangkad <span>•</span> Funny
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    📸 What's one memorable moment?
+                </p>
+                <p class="answer">
+                    “Nung swimming.”
+                </p>
+            </div>
+            <div class="answer-card final-answer">
+                <p class="question">
+                    💌 One piece of advice
+                </p>
+                <p class="answer">
+                    “Uhm siguro to never give up despite your problems.”
+                </p>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <p class="small-title">
+                BAM'S MESSAGE
+            </p>
+            <h3>“Never give up despite your problems.”</h3>
+            <p>
+                A little reminder from someone who knows me.
+            </p>
+        </div>
+
+        <button type="button" class="back-btn bottom-back" onclick="closeFriend()">← Back to My Friends</button>
+    </section>
+
+    <!-- LEX -->
+    <section class="friend-profile" id="lex-profile">
+        <button type="button" class="back-btn" onclick="closeFriend()">← Back to My Friends</button>
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="images/lex.jpg" alt="Lex Magpantay">
+            </div>
+            <div>
+                <p class="small-title">
+                    FRIEND #05
+                </p>
+                <h2>Lex Magpantay</h2>
+                <p class="profile-nickname">
+                    Nickname: Sentyyyy
+                </p>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <span>“</span>
+            <p>
+                Funny. Consistent. Competent.
+            </p>
+        </div>
+
+        <div class="answers">
+            <div class="answer-card">
+                <p class="question">
+                    💭 How would you describe me as a friend?
+                </p>
+                <p class="answer">
+                    “Solid, patawa, matalino.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ❤️ What's the best thing about me?
+                </p>
+                <p class="answer">
+                    “Maganda kasama — mapainuman, tawanan, tambayan, pag-aaral, basta.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    😂 What's something you like about me?
+                </p>
+                <p class="answer">
+                    “Pinupuno mo ng kasayahan yung loob ng mga tropa mo.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🫣 What's something you don't like about me?
+                </p>
+                <p class="answer">
+                    “Wala naman ako ayaw sayo, may tampo lang sa 'di mo pagsama sa amin.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🌱 What should I improve or change?
+                </p>
+                <p class="answer">
+                    “Wala naman, just be yourself lang.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ⭐ Describe me in 3 words
+                </p>
+                <p class="answer words">
+                    Funny <span>•</span> Consistent <span>•</span> Competent
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    📸 What's one memorable moment?
+                </p>
+                <p class="answer">
+                    “Syempre always naman sa inuman, tambay ganon.”
+                </p>
+            </div>
+            <div class="answer-card final-answer">
+                <p class="question">
+                    💌 One piece of advice
+                </p>
+                <p class="answer">
+                    “Enjoy every second of your day kase life is short. 'Di mo na mababalik yung buhay na meron ka at piliin mo lagi maging masaya.”
+                </p>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <p class="small-title">
+                SENTYYYY'S MESSAGE
+            </p>
+            <h3>“Enjoy every second of your day.”</h3>
+            <p>
+                A little reminder from someone who knows me.
+            </p>
+        </div>
+
+        <button type="button" class="back-btn bottom-back" onclick="closeFriend()">← Back to My Friends</button>
+    </section>
+
+    <!-- BENHENRIE -->
+    <section class="friend-profile" id="benhenrie-profile">
+        <button type="button" class="back-btn" onclick="closeFriend()">← Back to My Friends</button>
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="images/benhenrie.jpg" alt="Benhenrie Simeon">
+            </div>
+            <div>
+                <p class="small-title">
+                    FRIEND #06
+                </p>
+                <h2>Benhenrie Simeon</h2>
+                <p class="profile-nickname">
+                    Nickname: Sigben
+                </p>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <span>“</span>
+            <p>
+                Tall. Handsome. Stupid.
+            </p>
+        </div>
+
+        <div class="answers">
+            <div class="answer-card">
+                <p class="question">
+                    💭 How would you describe me as a friend?
+                </p>
+                <p class="answer">
+                    “You're a wonderful friend because sometimes when I need you you're always there for me. Totoo yan, 'di ko na pahahabain baka sabihin mo bading.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ❤️ What's the best thing about me?
+                </p>
+                <p class="answer">
+                    “The best thing about you is that poknat — DJK. Nakakasabay ka sa jokes ko tas parehas tayo humor.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    😂 What's something you like about me?
+                </p>
+                <p class="answer">
+                    “The thing that I like about you is whenever I need you, you're there.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🫣 What's something you don't like about me?
+                </p>
+                <p class="answer">
+                    “What I don't like about you is ikaw na mismo pero love pa rin kita.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    🌱 What should I improve or change?
+                </p>
+                <p class="answer">
+                    “You should improve improving yourself.”
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    ⭐ Describe me in 3 words
+                </p>
+                <p class="answer words">
+                    Tall <span>•</span> Handsome <span>•</span> Stupid
+                </p>
+                <p class="answer">
+                    <em>(2 truth, 1 lie 😂)</em>
+                </p>
+            </div>
+            <div class="answer-card">
+                <p class="question">
+                    📸 What's one memorable moment?
+                </p>
+                <p class="answer">
+                    “Most memorable moment was the time where after our graduation we went straight to Yakuza (bilyaran) and played for almost 3 hours with our toga (academic regalia) on.”
+                </p>
+            </div>
+            <div class="answer-card final-answer">
+                <p class="question">
+                    💌 One piece of advice
+                </p>
+                <p class="answer">
+                    “Wag ka muna magjowa (Girlfriend, Boyfriend).<br>Wag ka bubuntis.<br>Wagwag.<br><br>Alam kong isa lang hinihingi mong advice pero wala, delikado ka na.”
+                </p>
+            </div>
+        </div>
+
+        <div class="final-message">
+            <p class="small-title">
+                SIGBEN'S MESSAGE
+            </p>
+            <h3>“Wag ka muna magjowa. Wag ka bubuntis.”</h3>
+            <p>
+                A little reminder from someone who knows me. 😂
+            </p>
+        </div>
+
+        <button type="button" class="back-btn bottom-back" onclick="closeFriend()">← Back to My Friends</button>
+    </section>
+
+    <!-- =====================================================
+                                         STORY NAVIGATION
+                                    ====================================================== -->
+    <div class="story-navigation" id="storyNavigation">
+        <button type="button" class="story-nav-btn" onclick="previousFriend()">← Previous</button>
+        <button type="button" class="story-nav-btn" onclick="nextFriend()">Next →</button>
+    </div>
+
+    <!-- =====================================================
+                                         MEMORY WALL
+                                    ====================================================== -->
+    <section class="memory-wall" id="memories">
+        <div class="section-heading">
+            <p class="small-title">
+                MEMORIES THAT STAY
+            </p>
+            <h2>Our <span>Memory Wall</span></h2>
+            <p>
+                Little moments, random adventures, and memories that deserve to be remembered.
+            </p>
+        </div>
+
+        <div class="memory-grid">
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory1-cover.jpg">
+                        <source src="videos/memory1.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #01</h3>
+                    <p>
+                        “Just a collection of random moments, good vibes, and memories worth keeping. Sometimes the simplest moments become the ones we remember the most.” ✨🖤
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory2-cover.jpg">
+                        <source src="videos/memory2.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #02</h3>
+                    <p>
+                        “Random moments that became memories.” ✨🖤
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory3-cover.jpg">
+                        <source src="videos/memory3.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #03</h3>
+                    <p>
+                        “Good vibes, random laughs, and moments worth keeping.” ✨
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory4-cover.jpg">
+                        <source src="videos/memory4.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #04</h3>
+                    <p>
+                        “Sometimes the simplest moments are the ones we remember.” 🖤
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory5-cover.jpg">
+                        <source src="videos/memory5.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #05</h3>
+                    <p>
+                        “Another little piece of our story.” ✨
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory6-cover.jpg">
+                        <source src="videos/memory6.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #06</h3>
+                    <p>
+                        “Moments we probably didn't realize would become memories.” 🖤
+                    </p>
+                </div>
+            </article>
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory7-cover.jpg">
+                        <source src="videos/memory7.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #07</h3>
+                    <p>
+                        “Good times with good people.” ✨🖤
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory8-cover.jpg">
+                        <source src="videos/memory8.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #08</h3>
+                    <p>
+                        “Little moments, big memories.” ✨
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory9-cover.jpg">
+                        <source src="videos/memory9.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #09</h3>
+                    <p>
+                        “A moment worth remembering.” 🖤
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory10-cover.jpg">
+                        <source src="videos/memory10.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #10</h3>
+                    <p>
+                        “Another chapter of memories.” ✨
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory11-cover.jpg">
+                        <source src="videos/memory11.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #11</h3>
+                    <p>
+                        “The kind of moment you wish you could replay.” 🖤
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory12-cover.jpg">
+                        <source src="videos/memory12.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #12</h3>
+                    <p>
+                        “One more memory for the collection.” ✨
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory13-cover.jpg">
+                        <source src="videos/memory13.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #13</h3>
+                    <p>
+                        “Random moments that became something worth remembering.” 🖤
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory14-cover.jpg">
+                        <source src="videos/memory14.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #14</h3>
+                    <p>
+                        “Good memories with good people.” ✨
+                    </p>
+                </div>
+            </article>
+
+            <article class="memory-card">
+                <div class="memory-video">
+                    <video class="memory-player" controls playsinline preload="metadata" poster="images/memory15-cover.jpg">
+                        <source src="videos/memory15.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                    <h3 class="memory-title">Memory #15</h3>
+                    <p>
+                        “Another memory saved forever.” 🖤
+                    </p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- =====================================================
+         STAR RATING
+    ====================================================== -->
+    <section class="rating-section" id="rating">
+        <div class="rating-card">
+            <p class="small-title">RATE MY WEBSITE</p>
+            <h2>How would you rate this website?</h2>
+            <p class="rating-subtitle">Your rating is saved, so it will still be counted after you refresh the page. ⭐</p>
+
+            <div class="stars" id="starRating" role="radiogroup" aria-label="Website rating">
+                <button type="button" class="star" data-rating="1" aria-label="1 star">★</button>
+                <button type="button" class="star" data-rating="2" aria-label="2 stars">★</button>
+                <button type="button" class="star" data-rating="3" aria-label="3 stars">★</button>
+                <button type="button" class="star" data-rating="4" aria-label="4 stars">★</button>
+                <button type="button" class="star" data-rating="5" aria-label="5 stars">★</button>
+            </div>
+
+            <p class="rating-message" id="ratingMessage">Tap a star to rate.</p>
+
+            <div class="rating-stats">
+                <div>
+                    <strong id="averageRating">0.0</strong>
+                    <span>Average</span>
+                </div>
+                <div>
+                    <strong id="ratingCount">0</strong>
+                    <span>Total Ratings</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================================
+                                         FOOTER
+                                    ====================================================== -->
+    <footer class="site-footer">
+        <div class="footer-logo">
+            ECKMAN<span>.</span>
+        </div>
+        <p>
+            Made with memories, friendship, and a little bit of chaos. 😂
+        </p>
+        <div class="footer-line"></div>
+        <p class="small-title">
+            A LITTLE PIECE OF ME
+        </p>
+        <h2>This is how you show<br><span>me through your eyes.</span></h2>
+        <p class="footer-text">
+            Made with memories, friendship, and a little bit of code.
+        </p>
+        <p class="footer-credit">
+            © 2026 Marjeron • My Friends, My Memories
+        </p>
+        <small>All memories reserved.</small>
+    </footer>
+
+    <!-- =====================================================
+                                         BACK TO TOP
+                                    ====================================================== -->
+    <button type="button" class="top-btn" onclick="goTop()" aria-label="Back to top">↑</button>
+
+    <!-- =====================================================
+                                         LETTER MUSIC
+                                    ====================================================== -->
+    <audio id="letterMusic" loop>
+        <source src="music/friends-letter.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- =====================================================
+                                         JAVASCRIPT
+                                    ====================================================== -->
+    <script>
+        /* =====================================================
+           FRIEND ORDER
+        ===================================================== */
+        const friends = [
+            "camille",
+            "jhamel",
+            "jailyn",
+            "caren",
+            "lex",
+            "benhenrie"
+        ];
+
+        let currentFriendIndex = 0;
+
+        /* =====================================================
+           TYPEWRITER PARAGRAPHS
+        ===================================================== */
+        const letterParagraphs = [
+            "Miss you guys. ❤️",
+            "Yown nakapasok siya HAHHAHHAA.",
+            "I wanted to make something different this time. Not just another website with pictures, random videos, and things that people can scroll through and forget after a few minutes.",
+            "I wanted to make a small place where I could keep some of the memories, moments, laughs, random adventures, and stories that we've shared together.",
+            "We've probably had moments where we laughed over the dumbest things, talked about random topics for hours, made jokes that nobody else would understand, or simply spent time together without realizing that those ordinary moments would eventually become memories.",
+            "And honestly, those are some of the moments I appreciate the most.",
+            "Life keeps moving. People get busy. Everyone starts taking different paths, meeting new people, chasing different dreams, and dealing with their own problems.",
+            "That's why I wanted to make this.",
+            "So someday, when we look back, there will be something here that reminds us of the people we were, the things we did, and the friendships we had during this part of our lives.",
+            "Thank you for being part of my story. Thank you for the laughs, the conversations, the memories, and even the annoying moments.",
+            "You guys probably don't realize it, but every person I've met has left some kind of mark on my life.",
+            "And I'm genuinely grateful that our paths crossed.",
+            "I don't know where life will take all of us in the future, but I hope that even years from now, we'll still be able to look back at these memories and smile.",
+            "No matter how much things change, I hope we never completely forget the crazy, simple, funny, and sometimes chaotic moments we had together.",
+            "So this website is more than just code. It's a little time capsule.",
+            "A collection of memories. A collection of stories. And a small reminder that, at one point in our lives, we were all here together.",
+            "Thank you for being my friends. 🖤",
+            "And if you're reading this right now... just know that you are appreciated more than you probably realize.",
+            "Cheer's to the memories we've already made and the ones we haven't made yet. 🥂✨"
+        ];
+
+        let paraIndex = 0;
+        let charIndex = 0;
+
+        /* =====================================================
+           LETTER ELEMENTS
+        ===================================================== */
+        const letterIntro = document.getElementById("letterIntro");
+        const letterPassword = document.getElementById("letterPassword");
+        const friendLetter = document.getElementById("friendLetter");
+        const letterMusic = document.getElementById("letterMusic");
+
+        /* =====================================================
+           LETTER MUSIC SETUP
+        ===================================================== */
+        if (letterMusic) {
+            letterMusic.volume = 0.5;
+        }
+
+        /* =====================================================
+           TYPEWRITER EFFECT WITH AUTO-SCROLL
+        ===================================================== */
+        function startTypewriterLetter() {
+            const container = document.getElementById("typewriterLetterBody");
+            const letterContainer = document.getElementById("friendLetter");
+            const signature = document.getElementById("letterSignature");
+            if (!container) return;
+
+            container.innerHTML = "";
+            if (signature) signature.style.display = "none";
+
+            paraIndex = 0;
+            charIndex = 0;
+
+            function typeNextChar() {
+                if (paraIndex < letterParagraphs.length) {
+                    let currentP = container.children[paraIndex];
+                    if (!currentP) {
+                        currentP = document.createElement("p");
+                        if (paraIndex === letterParagraphs.length - 1) {
+                            currentP.className = "letter-final typing-cursor";
+                        } else {
+                            currentP.className = "typing-cursor";
+                        }
+                        container.appendChild(currentP);
+                    }
+
+                    const currentText = letterParagraphs[paraIndex];
+
+                    if (charIndex < currentText.length) {
+                        currentP.textContent += currentText.charAt(charIndex);
+                        charIndex++;
+
+                        // AUTO-SCROLL DOWN AS IT TYPES
+                        if (letterContainer) {
+                            letterContainer.scrollTop = letterContainer.scrollHeight;
+                        }
+
+                        setTimeout(typeNextChar, 25);
+                    } else {
+                        currentP.classList.remove("typing-cursor");
+                        paraIndex++;
+                        charIndex = 0;
+                        setTimeout(typeNextChar, 250);
+                    }
+                } else {
+                    if (signature) signature.style.display = "block";
+                    if (letterContainer) {
+                        letterContainer.scrollTop = letterContainer.scrollHeight;
+                    }
+                }
+            }
+
+            typeNextChar();
+        }
+
+        /* =====================================================
+           OPEN LETTER PASSWORD
+        ===================================================== */
+        function openLetterPassword() {
+            if (!letterIntro || !letterPassword) return;
+
+            /* Hide intro */
+            letterIntro.classList.add("hidden");
+            letterIntro.style.setProperty("display", "none", "important");
+
+            /* Show password */
+            letterPassword.classList.add("show");
+
+            const input = document.getElementById("letterPasswordInput");
+            if (input) {
+                setTimeout(function () {
+                    input.focus();
+                }, 200);
+            }
+        }
+
+        /* =====================================================
+           UNLOCK LETTER
+        ===================================================== */
+        function unlockLetter() {
+            const input = document.getElementById("letterPasswordInput");
+            const error = document.getElementById("passwordError");
+
+            if (!input || !error || !letterPassword || !friendLetter) return;
+
+            const password = input.value.trim().toLowerCase();
+
+            /* WRONG PASSWORD */
+            if (password !== "eckman") {
+                error.textContent = "❌ Apelyedo ko nalang yung sagot dyan oh huhuhu ulitin mooo";
+                input.value = "";
+                input.focus();
+                return;
+            }
+
+            /* CORRECT PASSWORD */
+            error.textContent = "";
+
+            /* Hide password */
+            letterPassword.classList.remove("show");
+            letterPassword.style.setProperty("display", "none", "important");
+
+            /* Lock scroll for background */
+            document.body.classList.add("letter-open");
+
+            /* Show letter container */
+            friendLetter.style.setProperty("display", "flex", "important");
+            friendLetter.style.setProperty("visibility", "visible", "important");
+            friendLetter.style.setProperty("opacity", "1", "important");
+            friendLetter.style.setProperty("z-index", "999999999", "important");
+
+            /* Start music */
+            if (letterMusic) {
+                letterMusic.volume = 0.5;
+                letterMusic.play().catch(function (error) {
+                    console.log("Music playback blocked:", error);
+                });
+            }
+
+            /* Start Typewriter */
+            startTypewriterLetter();
+        }
+
+        /* =====================================================
+           CLOSE LETTER & GO HOME
+        ===================================================== */
+        function closeLetterAndGoHome() {
+            stopLetterMusic();
+            document.body.classList.remove("letter-open");
+            goHome();
+        }
+
+        /* =====================================================
+           STOP LETTER MUSIC
+        ===================================================== */
+        function stopLetterMusic() {
+            if (!letterMusic) return;
+            letterMusic.pause();
+            letterMusic.currentTime = 0;
+        }
+
+        /* =====================================================
+           HIDE ALL PROFILES
+        ===================================================== */
+        function hideAllProfiles() {
+            document.querySelectorAll(".friend-profile").forEach(function (profile) {
+                profile.classList.remove("active");
+            });
+
+            const navigation = document.getElementById("storyNavigation");
+            if (navigation) {
+                navigation.classList.remove("active");
+            }
+        }
+
+        /* =====================================================
+           PAUSE ALL VIDEOS
+        ===================================================== */
+        function pauseAllVideos(exceptVideo = null) {
+            document.querySelectorAll(".memory-player").forEach(function (video) {
+                if (video !== exceptVideo) {
+                    video.pause();
+                }
+            });
+        }
+
+        /* =====================================================
+           HOME
+        ===================================================== */
+        function goHome() {
+            document.body.classList.remove("letter-open");
+
+            // Hide letter
+            const letter = document.getElementById("friendLetter");
+            if (letter) {
+                letter.style.setProperty("display", "none", "important");
+                letter.style.setProperty("visibility", "hidden", "important");
+                letter.style.setProperty("opacity", "0", "important");
+            }
+
+            // Hide password
+            const passwordScreen = document.getElementById("letterPassword");
+            if (passwordScreen) {
+                passwordScreen.classList.remove("show");
+                passwordScreen.style.setProperty("display", "none", "important");
+            }
+
+            // Hide envelope
+            const intro = document.getElementById("letterIntro");
+            if (intro) {
+                intro.style.setProperty("display", "none", "important");
+            }
+
+            // Hide profiles
+            hideAllProfiles();
+
+            // Pause videos
+            pauseAllVideos();
+
+            // Reset page state
+            document.body.classList.remove("profile-open", "friends-open", "memories-open");
+            document.body.classList.add("home-open");
+
+            // Go home
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /* =====================================================
+           FRIENDS
+        ===================================================== */
+        function showFriends() {
+            document.body.classList.remove("letter-open");
+            stopLetterMusic();
+            hideAllProfiles();
+            pauseAllVideos();
+
+            const memoryWall = document.getElementById("memories");
+            if (memoryWall) {
+                memoryWall.classList.remove("active");
+            }
+
+            document.body.classList.remove("home-open", "profile-open", "memories-open");
+            document.body.classList.add("friends-open");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /* =====================================================
+           OPEN FRIEND PROFILE
+        ===================================================== */
+        function openFriend(friendName) {
+            document.body.classList.remove("letter-open");
+            stopLetterMusic();
+            hideAllProfiles();
+            pauseAllVideos();
+
+            const profile = document.getElementById(friendName + "-profile");
+            if (!profile) return;
+
+            currentFriendIndex = friends.indexOf(friendName);
+            if (currentFriendIndex < 0) {
+                currentFriendIndex = 0;
+            }
+
+            document.body.classList.remove("home-open", "friends-open", "memories-open");
+            document.body.classList.add("profile-open");
+
+            profile.classList.add("active");
+
+            const navigation = document.getElementById("storyNavigation");
+            if (navigation) {
+                navigation.classList.add("active");
+            }
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /* =====================================================
+           CLOSE FRIEND
+        ===================================================== */
+        function closeFriend() {
+            hideAllProfiles();
+            pauseAllVideos();
+
+            document.body.classList.remove("home-open", "profile-open", "memories-open");
+            document.body.classList.add("friends-open");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /* =====================================================
+           NEXT FRIEND
+        ===================================================== */
+        function nextFriend() {
+            currentFriendIndex++;
+            if (currentFriendIndex >= friends.length) {
+                currentFriendIndex = 0;
+            }
+            openFriend(friends[currentFriendIndex]);
+        }
+
+        /* =====================================================
+           PREVIOUS FRIEND
+        ===================================================== */
+        function previousFriend() {
+            currentFriendIndex--;
+            if (currentFriendIndex < 0) {
+                currentFriendIndex = friends.length - 1;
+            }
+            openFriend(friends[currentFriendIndex]);
+        }
+
+        /* =====================================================
+           MEMORY WALL
+        ===================================================== */
+        function showMemories() {
+            document.body.classList.remove("letter-open");
+            stopLetterMusic();
+            hideAllProfiles();
+            pauseAllVideos();
+
+            document.body.classList.remove("home-open", "friends-open", "profile-open");
+            document.body.classList.add("memories-open");
+
+            const memoryWall = document.getElementById("memories");
+            if (memoryWall) {
+                memoryWall.classList.add("active");
+            }
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /* =====================================================
+           MEMORY VIDEO EVENTS
+        ===================================================== */
+        document.addEventListener("play", function (event) {
+            if (event.target && event.target.tagName === "VIDEO") {
+                pauseAllVideos(event.target);
+            }
+        }, true);
+
+        /* =====================================================
+           TYPING INTRO
+        ===================================================== */
+        const introText = "I'm Marjeron but they call me as Eckman. This is a small collection of honest thoughts, memories, and stories from my friends who know me best.";
+        const typingElement = document.getElementById("typingIntro");
+        let typingIndex = 0;
+
+        function typeIntro() {
+            if (!typingElement) return;
+
+            if (typingIndex < introText.length) {
+                typingElement.textContent += introText.charAt(typingIndex);
+                typingIndex++;
+                setTimeout(typeIntro, 35);
+            }
+        }
+
+        typeIntro();
+
+        /* =====================================================
+           BACK TO TOP
+        ===================================================== */
+        function goTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+        /* =====================================================
+           ENTER KEY FOR PASSWORD
+        ===================================================== */
+        const passwordInput = document.getElementById("letterPasswordInput");
+        if (passwordInput) {
+            passwordInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    unlockLetter();
+                }
+            });
+        }
+
+        /* =====================================================
+           STAR RATING — PERSISTENT AFTER REFRESH
+        ===================================================== */
+        (function initStarRating() {
+            const stars = document.querySelectorAll("#starRating .star");
+            const message = document.getElementById("ratingMessage");
+            const averageEl = document.getElementById("averageRating");
+            const countEl = document.getElementById("ratingCount");
+
+            if (!stars.length) return;
+
+            const STORAGE_KEY = "eckmanWebsiteStarRating";
+
+            function getRatingData() {
+                try {
+                    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+                    if (saved && Number.isFinite(saved.total) && Number.isFinite(saved.count)) {
+                        return {
+                            total: Math.max(0, saved.total),
+                            count: Math.max(0, saved.count),
+                            userRating: Number.isFinite(saved.userRating) ? saved.userRating : 0
+                        };
+                    }
+                } catch (error) {}
+                return { total: 0, count: 0, userRating: 0 };
+            }
+
+            function saveRatingData(data) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            }
+
+            function paintStars(value) {
+                stars.forEach(star => {
+                    const rating = Number(star.dataset.rating);
+                    star.classList.toggle("selected", rating <= value);
+                });
+            }
+
+            function updateStats() {
+                const data = getRatingData();
+                const average = data.count ? (data.total / data.count) : 0;
+
+                if (averageEl) averageEl.textContent = average.toFixed(1);
+                if (countEl) countEl.textContent = data.count.toString();
+                paintStars(data.userRating);
+
+                if (message && data.userRating) {
+                    message.textContent = `You rated this website ${data.userRating}/5 ⭐`;
+                }
+            }
+
+            stars.forEach(star => {
+                star.addEventListener("mouseenter", () => {
+                    paintStars(Number(star.dataset.rating));
+                });
+
+                star.addEventListener("click", () => {
+                    const newRating = Number(star.dataset.rating);
+                    const data = getRatingData();
+
+                    // One rating per browser. Rating again updates the previous vote.
+                    if (data.userRating) {
+                        data.total = data.total - data.userRating + newRating;
+                    } else {
+                        data.total += newRating;
+                        data.count += 1;
+                    }
+
+                    data.userRating = newRating;
+                    saveRatingData(data);
+                    updateStats();
+
+                    if (message) {
+                        message.textContent = `Thanks! You gave this website ${newRating}/5 ⭐`;
+                    }
+                });
+            });
+
+            document.getElementById("starRating")?.addEventListener("mouseleave", updateStats);
+            updateStats();
+        })();
+
+        /* =====================================================
+           PAGE LOAD
+        ===================================================== */
+        window.addEventListener("load", function () {
+            hideAllProfiles();
+            pauseAllVideos();
+
+            document.body.classList.remove("profile-open", "friends-open", "memories-open");
+            document.body.classList.add("home-open");
+        });
+
+        /* =====================================================
+           BROWSER BACK
+        ===================================================== */
+        window.addEventListener("popstate", function () {
+            goHome();
+        });
+    </script>
+</body>
+
+</html>
